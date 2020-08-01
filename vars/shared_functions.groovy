@@ -10,14 +10,14 @@ import java.net.URLConnection;
 
 
 def sendGotifyNotification(status) {
-    GOTIFY_URL = "https://gotify.codingcoffee.me/message"
+    GOTIFY_URL = "https://gotify.codingcoffee.me/message?token=AVtxK9UMRBFESY."
 
     def url = new URL(GOTIFY_URL)
     def conn = url.openConnection()
     conn.setDoOutput(true)
     def writer = new OutputStreamWriter(conn.getOutputStream())
 
-    writer.write("token=AVtxK9UMRBFESY.&title=Rusty&message=${status}&priority=5")
+    writer.write("title=Rusty&message=${status}&priority=5")
     writer.flush()
     String line
     def reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))
