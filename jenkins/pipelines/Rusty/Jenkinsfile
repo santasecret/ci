@@ -9,7 +9,7 @@ kind: Pod
 spec:
     containers:
     - name: ansible-slave
-      image: alpine:latest
+      image: rust:1.45.0-alpine3.11
       command: ["cat"]
       imagePullPolicy: Always
       tty: true
