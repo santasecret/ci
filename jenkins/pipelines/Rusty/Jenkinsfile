@@ -35,11 +35,11 @@ pipeline {
             }
         }
     }
-    // post {
-    //     always {
-    //         script {
-    //             shared_functions.sendGotifyNotification(currentBuild.result, "")
-    //         }
-    //     }
-    // }
+    post {
+        always {
+            script {
+                shared_functions.sendGotifyNotification(currentBuild.result)
+            }
+        }
+    }
 }
