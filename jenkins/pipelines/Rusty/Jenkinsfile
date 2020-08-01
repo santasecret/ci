@@ -1,0 +1,45 @@
+#!groovy
+@Library('jenkins-library@master') _
+pipeline {
+    // agent {
+    //     kubernetes {
+    //         yaml libraryResource('PodSpec.yaml')
+    //     }
+    // }
+    options {
+        timestamps ()
+        timeout(time: 1, unit: 'HOURS')
+    }
+    stages {
+        stage('Pull Latest Code') {
+            steps {
+                container('ansible-slave') {
+                    git credentialsId: 'jenkins_github_readonly', branch: 'master', url: 'https://github.com/santasecret/rusty'
+                }
+            }
+        }
+        stage('Tasks') {
+            environment {
+                RUST_TARGETS="x86_64-unknown-linux-musl"
+                CARGO_TARGET_DIR="/cache"
+            }
+            steps {
+                container('ansible-slave') {
+                    script {
+                        sh '''
+                        apk add --no-cache musl-dev
+                        cargo build --verbose --target $RUST_TARGETS --release
+                        '''
+                    }
+                }
+            }
+        }
+    }
+    // post {
+    //     always {
+    //         script {
+    //             shared_functions.sendGotifyNotification(currentBuild.result, "")
+    //         }
+    //     }
+    // }
+}
