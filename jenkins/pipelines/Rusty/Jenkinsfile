@@ -1,11 +1,21 @@
 #!groovy
 @Library('jenkins-library@master') _
 pipeline {
-    // agent {
-    //     kubernetes {
-    //         yaml libraryResource('PodSpec.yaml')
-    //     }
-    // }
+    agent {
+        kubernetes {
+          yaml"""
+apiVersion: v1
+kind: Pod
+spec:
+    containers:
+    - name: ansible-slave
+      image: alpine:latest
+      command: ["cat"]
+      imagePullPolicy: Always
+      tty: true
+"""
+        }
+    }
     options {
         timestamps ()
         timeout(time: 1, unit: 'HOURS')
